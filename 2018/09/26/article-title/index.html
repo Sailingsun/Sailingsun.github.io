@@ -11,7 +11,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="Fechin,"> 
-    
+    <meta name="description" content="   ref 注册时间的重要说明：因为 ref 本身是作为渲染结果被创建的，在初始渲染的时候你不能访问它们 - 它们还不存在！$refs 也不是响应式的，因此你不应该试图用它在模板中做数据绑定。
+
+,"> 
     <meta name="author" content="Dtyctrl"> 
     <link rel="alternative" href="atom.xml" title="Hexo" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.png"> 
@@ -26,7 +28,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">article title</h3>
+    <h3 class="subtitle">Ref与nextTick的配合使用</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -43,14 +45,24 @@
     <div class="section">
         <div class="article">
     <div class='main'>
-        <h1 class="title">article title</h1>
+        <h1 class="title">Ref与nextTick的配合使用</h1>
         <div class="stuff">
             <span>九月 26, 2018</span>
             
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/tag1/">tag1</a></li></ul>
+
 
         </div>
         <div class="content markdown">
-            
+            <p>   ref 注册时间的重要说明：因为 ref 本身是作为渲染结果被创建的，在初始渲染的时候你不能访问它们 - 它们还不存在！$refs 也不是响应式的，因此你不应该试图用它在模板中做数据绑定。</p>
+<hr>
+
+<p><img src="/Users/sunjiahao/Library/Application Support/typora-user-images/16333779-D713-4D03-98A7-8FB93400DDD1/Pasted%20Graphic.tiff" alt="Pasted Graphic.tiff"></p>
+<p><img src="/Users/sunjiahao/Library/Application Support/typora-user-images/16333779-D713-4D03-98A7-8FB93400DDD1/Pasted%20Graphic%201.tiff" alt="Pasted Graphic 1.tiff"></p>
+<p><img src="/Users/sunjiahao/Library/Application Support/typora-user-images/16333779-D713-4D03-98A7-8FB93400DDD1/Pasted%20Graphic%202.tiff" alt="Pasted Graphic 2.tiff"></p>
+<p><img src="/Users/sunjiahao/Library/Application Support/typora-user-images/16333779-D713-4D03-98A7-8FB93400DDD1/Pasted%20Graphic%203.tiff" alt="Pasted Graphic 3.tiff"></p>
+<p>上述项目例子，在dom更新完成后设置按钮放置在左边，使得最后结果是选择左侧</p>
+
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">
