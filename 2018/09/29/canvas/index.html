@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Suho’Blog</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Fechin,Dtyctrl,"> 
+    <meta name="description" content="Dtyctrl，Sudo,"> 
+    <meta name="author" content="Dtyctrl"> 
+    <link rel="alternative" href="atom.xml" title="Suho’Blog" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.png"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+</head>
+
+<body class="loading">
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">canvas坑——不要在style规定宽高</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">canvas坑——不要在style规定宽高</h1>
+        <div class="stuff">
+            <span>九月 29, 2018</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/article/">article</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p>今天做了一个对飞机模型标注的项目，首先分析了一波，有两个idea，一个是用绝对定位div画，一个是用canvas画，之前用div画过，然而觉得最近项目排期不是很满，就用canvas画了。然后就按部就班在css中写了width，遇到之后我画的标注就扭曲了起来，然后问了一下w3官网，他告诉我这些：</p>
+<blockquote>
+<p>The <code>canvas</code> element has two attributes  to control the size of the coordinate space: <code>width</code> and <code>height</code>.  These attributes, when specified, must have values that are <a href="http://www.w3.org/TR/html5/common-microsyntaxes.html#valid-non-negative-integer" target="_blank" rel="noopener">valid  non-negative integers</a>. The <a href="http://www.w3.org/TR/html5/common-microsyntaxes.html#rules-for-parsing-non-negative-integers" target="_blank" rel="noopener">rules  for parsing non-negative integers</a> must be used to obtain their numeric values. If an attribute is missing, or if parsing its value returns an error, then the default value must be used instead. The <code>width</code> attribute  defaults to 300, and the <code>height</code> attribute  defaults to 150.</p>
+<p>The intrinsic dimensions of the <code>canvas</code> element  equal the size of the coordinate space, with the numbers interpreted in CSS pixels. However, the element can be sized arbitrarily by a style sheet. During rendering, the image is scaled to fit this layout size.</p>
+</blockquote>
+<p>说了这么多其实就两句话，canvas标签的width和height是画布实际宽度和高度，绘制的图形都是在这个上面，而style的width和height是canvas在浏览器中被渲染的高度和宽度。如果canvas的width和height没指定或值不正确，就被设置成默认值(width:300px，height:150px)。</p>
+<h5 id="探究了一下"><a href="#探究了一下" class="headerlink" title="探究了一下"></a>探究了一下</h5><p>1、当使用width height属性时，显示正常不会被拉伸；如下</p>
+ <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">"mycanvas"</span> <span class="attr">width</span>=<span class="string">"300"</span> <span class="attr">height</span>=<span class="string">"300"</span>&gt;</span>浏览器不支持Canvas,请升级或改用其它浏览器！<span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">    var canvas = document.getElementById("mycanvas"),</span></span><br><span class="line"><span class="undefined">        ctx = canvas.getContext('2d');</span></span><br><span class="line"><span class="undefined">    ctx.moveTo(0,0);</span></span><br><span class="line"><span class="undefined">    ctx.lineTo(300,150);</span></span><br><span class="line"><span class="undefined">    ctx.stroke();</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>　　</p>
+<p>运行效果：</p>
+<p><img src="/2018/09/29/canvas/1088303-20161229202210007-531283515.png" alt="1088303-20161229202210007-531283515"></p>
+<p>2、使用style时图像会被拉伸（变形），</p>
+ <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-id">#mycanvas</span> &#123;</span><br><span class="line">    <span class="attribute">width</span>: <span class="number">150px</span>;</span><br><span class="line">    <span class="attribute">height</span>: <span class="number">150px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>　　</p>
+<p>运行效果：</p>
+<p><img src="/2018/09/29/canvas/1088303-20161229202434320-1560067383.png" alt="1088303-20161229202434320-1560067383"></p>
+<p>如何理解？？？可以这么理解————</p>
+<p>Canvas 是一个画板和一张画纸，画板相当于一个容器，画图/作业是在画纸上进行的，</p>
+<p>画板和画纸的默认宽高是300*150，当画纸与画板宽高相等时，图像不会被拉伸，当画纸与画板宽高不一样时，图像就会被拉伸（变形）。</p>
+<p>1， width 和 height 属性是设定画板和画纸的宽高，</p>
+<p>如： width=”300” height=”300” 即画板的宽高是300<em>300，画纸的宽高也是300</em>300，作业的300*300 的对角线图像就不会被拉伸</p>
+<p>2， style样式 里设定的是仅画板的宽高，画纸的宽高还是为默认值300*150，</p>
+<p>（以上图为例）因此所作业的300*300的对角线图像仅有一部分画在画纸上，如下：</p>
+<p><img src="/2018/09/29/canvas/1088303-20161229202510132-902136134.png" alt="1088303-20161229202510132-902136134"></p>
+<p>画纸不会让画板就这么空出一片，于是画纸连同图像就要一起拉伸到跟画板大小一样。在此例子当中，画纸宽与画板宽都为30，而高为画板的一半，因此只需将高拉伸一倍即可，so 图像也一起被拉伸变瘦，X方向不变，Y方向增至一倍， 所以就得到了变形之后的图片</p>
+<p><img src="/2018/09/29/canvas/1088303-20161229202542773-436015013.png" alt="1088303-20161229202542773-436015013">  </p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
+                    
+                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
