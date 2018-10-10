@@ -26,7 +26,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">nextTick</h3>
+    <h3 class="subtitle">requestAnimationFrame正确使用姿势</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -43,24 +43,19 @@
     <div class="section">
         <div class="article">
     <div class='main'>
-        <h1 class="title">nextTick</h1>
+        <h1 class="title">requestAnimationFrame正确使用姿势</h1>
         <div class="stuff">
-            <span>九月 08, 2018</span>
+            <span>十月 10, 2018</span>
             
   <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/article/">article</a></li></ul>
 
 
         </div>
         <div class="content markdown">
-            <h4 id="Ref与nextTick配合使用"><a href="#Ref与nextTick配合使用" class="headerlink" title="Ref与nextTick配合使用"></a>Ref与nextTick配合使用</h4><hr>
-
-<p>ref 注册时间的重要说明：因为 ref 本身是作为渲染结果被创建的，在初始渲染的时候你不能访问它们 - 它们还不存在！$refs 也不是响应式的，因此你不应该试图用它在模板中做数据绑定。</p>
-<p><img src="/2018/09/08/nextTick/PG0.png" alt="PG0"></p>
-<p><img src="/2018/09/08/nextTick/PG1.png" alt="PG1"></p>
-<p><img src="/2018/09/08/nextTick/PG2.png" alt="PG2"></p>
-<p><img src="/2018/09/08/nextTick/PG3.png" alt="PG3"></p>
-<p>上述项目例子，在dom更新完成后设置按钮值为自定义项目配额，使得最后结果也是选择自定义项目配额</p>
-
+            <p><code>requestAnimationFrame</code> 不管理回调函数队列，而<font color="red"><strong>滚动、触摸</strong></font>这类高触发频率事件的回调可能会在同一帧内触发多次。所以正确使用 <code>requestAnimationFrame</code> 的姿势是，在同一帧内可能调用多次 <code>requestAnimationFrame</code> 时，要管理回调函数，防止重复绘制动画。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>对于这种高频发事件，一般的解决方法是使用节流函数。但是在这里使用节流函数并不能完美解决问题。因为节流函数是通过时间管理队列的，而 <code>requestAnimationFrame</code> 的触发时间是不固定的，在高刷新频率的显示屏上时间会小于 16.67ms，页面如果被推入后台，时间可能大于 16.67ms。</p>
+<p>完美的解决方案是通过 <code>requestAnimationFrame</code> 来管理队列，其思路就是保证 <code>requestAnimationFrame</code> 的队列里，同样的回调函数只有一个。(ps: 与控制动画在高频发生事件中触发一次idea相似)示意代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> onScroll = <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (scheduledAnimationFrame) &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">    scheduledAnimationFrame = <span class="literal">true</span></span><br><span class="line">    <span class="built_in">window</span>.requestAnimationFrame(<span class="function"><span class="params">timestamp</span> =&gt;</span> &#123;</span><br><span class="line">        scheduledAnimationFrame = <span class="literal">false</span></span><br><span class="line">        animation(timestamp)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'scroll'</span>, onScroll)</span><br></pre></td></tr></table></figure>
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">
