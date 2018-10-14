@@ -30,7 +30,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">tiff坑——图像不能在浏览器预览</h3>
+    <h3 class="subtitle">lodash常用方法</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -47,23 +47,17 @@
     <div class="section">
         <div class="article">
     <div class='main'>
-        <h1 class="title">tiff坑——图像不能在浏览器预览</h1>
+        <h1 class="title">lodash常用方法</h1>
         <div class="stuff">
-            <span>九月 29, 2018</span>
+            <span>十月 14, 2018</span>
             
-  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/tiff/">tiff</a></li></ul>
-
 
         </div>
         <div class="content markdown">
-            <h4 id="TIFF：标记图像文件格式"><a href="#TIFF：标记图像文件格式" class="headerlink" title="TIFF：标记图像文件格式"></a>TIFF：标记图像文件格式</h4><p><hr><br>TIFF 以任何颜色深度存储单个光栅图像。TIFF 可以被认为是印刷行业中受到支持最广的图形文件格式。TIFF 支持可选压缩，<strong><font color="red">不适用于在 Web 浏览器中查看</font></strong>。TIFF 格式是可扩展的格式。这意味着程序员可以修改原始规范以添加功能或满足特定的需要。修改规范可能会导致不同类型的 TIFF 图片之间不兼容。</p>
-<p>PS：喷绘和写真的图像最好储存为TIF格式，但是注意不可用压缩的格式，JPG经过压缩了的，TIFF是没有压缩过的图片，不光是写真喷绘，印刷等场合的图片都需要TIFF的，而且是CMYK的。</p>
-<h4 id="探究其他格式图片（前端会经常接触到的）"><a href="#探究其他格式图片（前端会经常接触到的）" class="headerlink" title="探究其他格式图片（前端会经常接触到的）"></a>探究其他格式图片（前端会经常接触到的）</h4><hr>
-
-<p>GIF全称Graphic Interchange Format ,图像交换格式，最多可使用256种颜色，适合导航条，按钮，图标等具有统一色调的图像，可以制作动态图像。当网速慢的时候可以将图像从模糊到清晰慢慢显示。 </p>
-<p>JPEG全称Joint Photographic Experts Group ,图像压缩模式，可以包含数百万种颜色，文件大小和加载时间很大，不支持透明图和动态图，但能够保留全真的色调版格式，如果图像需要全彩模式才能表现效果，最好使用JPEG。 </p>
-<p>PNG格式 全称Portable Network Graphics 提供了将图像文件以最小的方式压缩又不造成图像失真的技术。支持48位的色彩，更快地交错显示，跨平台的图像亮度控制，更多层的透明度设置。</p>
-
+            <h1 id="compact"><a href="#compact" class="headerlink" title="compact"></a>compact</h1><p><a href="https://github.com/lodash/lodash/blob/master/compact.js" target="_blank" rel="noopener">compact源码</a></p>
+<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><p>Creates an array with all falsey values removed. The values <code>false</code>, <code>null</code>, <code>0</code>, <code>&quot;&quot;</code>, <code>undefined</code>, and <code>NaN</code> are falsey.</p>
+<p>新建一个移除了所有falsey值的数组。 <code>false</code>, <code>null</code>, <code>0</code>, <code>&quot;&quot;</code>, <code>undefined</code>, and <code>NaN</code> 都是falsey值。(移除所有假值并返回一个新的数组)</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">compact([0, 1, false, 2, &apos;&apos;, 3])</span><br><span class="line">// =&gt; [1, 2, 3]</span><br></pre></td></tr></table></figure>
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">
