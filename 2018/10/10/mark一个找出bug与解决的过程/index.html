@@ -26,7 +26,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">npm install不成功请猛击这里</h3>
+    <h3 class="subtitle">mark一个找出bug与解决的过程</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -43,28 +43,21 @@
     <div class="section">
         <div class="article">
     <div class='main'>
-        <h1 class="title">npm install不成功请猛击这里</h1>
+        <h1 class="title">mark一个找出bug与解决的过程</h1>
         <div class="stuff">
-            <span>九月 29, 2018</span>
+            <span>十月 10, 2018</span>
             
-  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/npm-npm-install-package-lock-package-json/">npm,npm install,package-lock,package.json</a></li></ul>
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/arguments-callee/">arguments.callee</a></li></ul>
 
 
         </div>
         <div class="content markdown">
-            <h3 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h3><h4 id="1、速度不行，自己百度淘宝镜像就ok。"><a href="#1、速度不行，自己百度淘宝镜像就ok。" class="headerlink" title="1、速度不行，自己百度淘宝镜像就ok。"></a>1、速度不行，自己百度淘宝镜像就ok。</h4><h4 id="2、有package-lock-json文件，项目没有按package-json文件构建。"><a href="#2、有package-lock-json文件，项目没有按package-json文件构建。" class="headerlink" title="2、有package-lock.json文件，项目没有按package.json文件构建。"></a>2、有package-lock.json文件，项目没有按package.json文件构建。</h4><h3 id="问题产生原因："><a href="#问题产生原因：" class="headerlink" title="问题产生原因："></a>问题产生原因：</h3><p>前几天升级了 Node.js v8.0 后，自带的 npm 也升级到了5.0，第一次使用的时候确实惊艳到了：原本重新安装一次模块要十几秒到事情，现在一秒多就搞定了。先不要激动，现在我来大概讲一下 npm 5 的一些大的变化：</p>
-<ul>
-<li>使用<code>npm  install xxx</code>命令安装模块时，不再需要<code>--save</code>选项，会自动将模块依赖信息保存到  package.json 文件；</li>
-<li>安装模块操作（改变 node_modules 文件夹内容）会生成或更新 package-lock.json 文件</li>
-<li>发布的模块不会包含 package-lock.json 文件</li>
-<li><p>如果手动修改了 package.json 文件中已有模块的版本，直接执行<code>npm  install</code>不会安装新指定的版本，只能通过<code>npm install  xxx@yy</code>更新</p>
-<p>重新安装模块之所以快，是因为 package-lock.json 文件中已经记录了整个 node_modules 文件夹的树状结构，甚至连模块的下载地址都记录了，再重新安装的时候只需要直接下载文件即可（这样看起来 facebook 的 yarn 好像没有啥优势了）。</p>
-</li>
-</ul>
-<p>以后直接改 package.json 文件相应模块的版本号，再执行<code>npm install</code>不会更新了（好可怕），你只能手动用<code>npm install xxx@yy</code>指定版本号来安装，然后它会自动更新 package-lock.json 文件。直接执行`npm</p>
-<p>install`时，如果不存在 package-lock.json 文件，它会根据安装模块后的 node_modules 目录结构来创建；<strong><font color="red">如果已经存在 package-lock.json 文件，则它只会根据 package-lock.json 文件指定的结构来下载模块，并不会理会 package.json 文件</font></strong>。</p>
-<h3 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h3><p>终止进程把package-lock.json删除，后再npm install，特别是项目中本来就有package.json这个文件时，那么十有八九就是这问题了。</p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>与我们解决方案有关的其实也就原因最后一句话，如果一个项目有了package.json，那么这个项目让你npm  install就是让你按照他的package.json来运行的，如果你用你自己的package-lock.json，那么结果可想而知……</p>
+            <p>深度学习一体机(ape)2.6前端是用er写的比较老的一个版本。然后2.7的更新迭代是都要用san框架来写(ps:由于er无人维护了)，过程中遇到一个问题是er框架与san框架的碰撞，与其说是er框架与san框架的碰撞，不如说是san框架与jQuery的碰撞。在san框架中写上传文件时调用upload.js按照er框架那种调用原理来调，结果<img src="/2018/10/10/mark一个找出bug与解决的过程/Users/sunjiahao/Library/Application Support/typora-user-images/image-20181119171640196.png" alt="image-20181119171640196"></p>
+<p>然后debug了半天，debug进jQuery文件发现调用这个upload时，他的dom<img src="/2018/10/10/mark一个找出bug与解决的过程/Users/sunjiahao/Library/Application Support/typora-user-images/image-20181119190556557.png" alt="image-20181119190556557"><img src="/2018/10/10/mark一个找出bug与解决的过程/Users/sunjiahao/Library/Application Support/typora-user-images/image-20181119190753250.png" alt="image-20181119190753250">并没有加载，所以jQuery获取不到导致后边一系列的报错。这个上传弹窗是在san原始dialog组件上造的一个dialog，于是去追dialog源码</p>
+<p><img src="/2018/10/10/mark一个找出bug与解决的过程/Users/sunjiahao/Library/Application Support/typora-user-images/image-20181119191430621.png" alt="image-20181119191430621"></p>
+<p>看到这，仿佛抓到了一根救命稻草，这不正是我想要的吗，确保父组件(在这是自己写的上传组件)加载完毕后fire出去一个open方法让我调用，然而我还是太天真了<img src="/2018/10/10/mark一个找出bug与解决的过程/Users/sunjiahao/Library/Application Support/typora-user-images/image-20181119194725848.png" alt="image-20181119194725848"></p>
+<p>在页面加载时所有dialog的attached也一起触发了，由于这时open是关着的，so…</p>
+<p>然后现在要做的是要open为true，再触发dialog的attached 而且要页面加载时upload的dom加载完成后再调用upload.js，正常情况下控制dialog开关是控制open的布尔值，而此种情况下需要设置open一直为true，就想到s-if，s-if可以做到销毁和重建内部的事件监听和子组件，为什么不用s-if来控制dialog的开关呢，然后终于resolved~</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">

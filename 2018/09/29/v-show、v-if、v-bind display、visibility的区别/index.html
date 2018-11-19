@@ -26,7 +26,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">npm install不成功请猛击这里</h3>
+    <h3 class="subtitle">v-show、v-if的区别和display与visibility的区别</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -43,33 +43,39 @@
     <div class="section">
         <div class="article">
     <div class='main'>
-        <h1 class="title">npm install不成功请猛击这里</h1>
+        <h1 class="title">v-show、v-if的区别和display与visibility的区别</h1>
         <div class="stuff">
             <span>九月 29, 2018</span>
             
-  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/npm-npm-install-package-lock-package-json/">npm,npm install,package-lock,package.json</a></li></ul>
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/tiff/">tiff</a></li></ul>
 
 
         </div>
         <div class="content markdown">
-            <h3 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h3><h4 id="1、速度不行，自己百度淘宝镜像就ok。"><a href="#1、速度不行，自己百度淘宝镜像就ok。" class="headerlink" title="1、速度不行，自己百度淘宝镜像就ok。"></a>1、速度不行，自己百度淘宝镜像就ok。</h4><h4 id="2、有package-lock-json文件，项目没有按package-json文件构建。"><a href="#2、有package-lock-json文件，项目没有按package-json文件构建。" class="headerlink" title="2、有package-lock.json文件，项目没有按package.json文件构建。"></a>2、有package-lock.json文件，项目没有按package.json文件构建。</h4><h3 id="问题产生原因："><a href="#问题产生原因：" class="headerlink" title="问题产生原因："></a>问题产生原因：</h3><p>前几天升级了 Node.js v8.0 后，自带的 npm 也升级到了5.0，第一次使用的时候确实惊艳到了：原本重新安装一次模块要十几秒到事情，现在一秒多就搞定了。先不要激动，现在我来大概讲一下 npm 5 的一些大的变化：</p>
-<ul>
-<li>使用<code>npm  install xxx</code>命令安装模块时，不再需要<code>--save</code>选项，会自动将模块依赖信息保存到  package.json 文件；</li>
-<li>安装模块操作（改变 node_modules 文件夹内容）会生成或更新 package-lock.json 文件</li>
-<li>发布的模块不会包含 package-lock.json 文件</li>
-<li><p>如果手动修改了 package.json 文件中已有模块的版本，直接执行<code>npm  install</code>不会安装新指定的版本，只能通过<code>npm install  xxx@yy</code>更新</p>
-<p>重新安装模块之所以快，是因为 package-lock.json 文件中已经记录了整个 node_modules 文件夹的树状结构，甚至连模块的下载地址都记录了，再重新安装的时候只需要直接下载文件即可（这样看起来 facebook 的 yarn 好像没有啥优势了）。</p>
-</li>
-</ul>
-<p>以后直接改 package.json 文件相应模块的版本号，再执行<code>npm install</code>不会更新了（好可怕），你只能手动用<code>npm install xxx@yy</code>指定版本号来安装，然后它会自动更新 package-lock.json 文件。直接执行`npm</p>
-<p>install`时，如果不存在 package-lock.json 文件，它会根据安装模块后的 node_modules 目录结构来创建；<strong><font color="red">如果已经存在 package-lock.json 文件，则它只会根据 package-lock.json 文件指定的结构来下载模块，并不会理会 package.json 文件</font></strong>。</p>
-<h3 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h3><p>终止进程把package-lock.json删除，后再npm install，特别是项目中本来就有package.json这个文件时，那么十有八九就是这问题了。</p>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><p>与我们解决方案有关的其实也就原因最后一句话，如果一个项目有了package.json，那么这个项目让你npm  install就是让你按照他的package.json来运行的，如果你用你自己的package-lock.json，那么结果可想而知……</p>
+            <h3 id="v-if与v-show的区别"><a href="#v-if与v-show的区别" class="headerlink" title="v-if与v-show的区别"></a>v-if与v-show的区别</h3><p>相同点：v-if与v-show都可以动态控制dom元素显示隐藏</p>
+<p>不同点：v-if显示隐藏是将dom元素整个添加或删除，而v-show隐藏则是为该元素添加css–display:none，dom元素还在。</p>
+<p><strong>1.手段</strong>：v-if是动态的向DOM树内添加或者删除DOM元素；v-show是通过设置DOM元素的display样式属性控制显隐；</p>
+<p><strong>2.编译过程</strong>：v-if切换有一个局部编译/卸载的过程，切换过程中合适地销毁和重建内部的事件监听和子组件；v-show只是简单的基于css切换；</p>
+<p><strong>3.编译条件</strong>：v-if是惰性的，如果初始条件为假，则什么也不做；只有在条件第一次变为真时才开始局部编译（编译被缓存？编译被缓存后，然后再切换的时候进行局部卸载); v-show是在任何条件下（首次条件是否为真）都被编译，然后被缓存，而且DOM元素保留；</p>
+<p><strong>4.性能消耗：</strong>v-if有更高的切换消耗；v-show有更高的初始渲染消耗；</p>
+<p><strong>5.使用场景：</strong>v-if适合运营条件不大可能改变；v-show适合频繁切换。</p>
+<h4>display与visibility的区别</h4>
+
+
+
+<p>1.display:none是彻底消失，不在文档流中占位，浏览器也不会解析该元素；visibility:hidden是视觉上消失了，可以理解为透明度为0的效果，在文档流中占位，浏览器会解析该元素；</p>
+<p>2.使用visibility:hidden比display:none性能上要好，display:none切换显示时，页面产生回流（当页面中的一部分元素需要改变规模尺寸、布局、显示隐藏等，页面重新构建，此时就是回流。所有页面第一次加载时需要产生一次回流），而visibility切换是否显示时则不会引起回流。</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
-                <source type="audio/mpeg" src="http://music.163.com/song/media/outer/url?id=557581476.mp3">
+                <source type="audio/mpeg" src="">
             </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://music.163.com/song/media/outer/url?id=557581476.mp3'></li>
+                    
+                </ul>
             
         </div>
         
