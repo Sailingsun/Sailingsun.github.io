@@ -52,10 +52,15 @@
 
         </div>
         <div class="content markdown">
-            <p>深度学习一体机(ape)2.6前端是用er写的比较老的一个版本。然后2.7的更新迭代是都要用san框架来写(ps:由于er无人维护了)，过程中遇到一个问题是er框架与san框架的碰撞，与其说是er框架与san框架的碰撞，不如说是san框架与jQuery的碰撞。在san框架中写上传文件时调用upload.js按照er框架那种调用原理来调，结果<img src="/2018/10/10/mark一个找出bug与解决的过程/Users/sunjiahao/Library/Application Support/typora-user-images/image-20181119171640196.png" alt="image-20181119171640196"></p>
-<p>然后debug了半天，debug进jQuery文件发现调用这个upload时，他的dom<img src="/2018/10/10/mark一个找出bug与解决的过程/Users/sunjiahao/Library/Application Support/typora-user-images/image-20181119190556557.png" alt="image-20181119190556557"><img src="/2018/10/10/mark一个找出bug与解决的过程/Users/sunjiahao/Library/Application Support/typora-user-images/image-20181119190753250.png" alt="image-20181119190753250">并没有加载，所以jQuery获取不到导致后边一系列的报错。这个上传弹窗是在san原始dialog组件上造的一个dialog，于是去追dialog源码</p>
-<p><img src="/2018/10/10/mark一个找出bug与解决的过程/Users/sunjiahao/Library/Application Support/typora-user-images/image-20181119191430621.png" alt="image-20181119191430621"></p>
-<p>看到这，仿佛抓到了一根救命稻草，这不正是我想要的吗，确保父组件(在这是自己写的上传组件)加载完毕后fire出去一个open方法让我调用，然而我还是太天真了<img src="/2018/10/10/mark一个找出bug与解决的过程/Users/sunjiahao/Library/Application Support/typora-user-images/image-20181119194725848.png" alt="image-20181119194725848"></p>
+            <p>深度学习一体机(ape)2.6前端是用er写的比较老的一个版本。然后2.7的更新迭代是都要用san框架来写(ps:由于er无人维护了)，过程中遇到一个问题是er框架与san框架的碰撞，与其说是er框架与san框架的碰撞，不如说是san框架与jQuery的碰撞。在san框架中写上传文件时调用upload.js按照er框架那种调用原理来调，结果</p>
+<p><img src="/2018/10/10/mark一个找出bug与解决的过程/mark1.png" alt="mark1"></p>
+<p>然后debug了半天，debug进jQuery文件发现调用这个upload时，他的dom</p>
+<p><img src="/2018/10/10/mark一个找出bug与解决的过程/mark2.png" alt="mark2"></p>
+<p><img src="/2018/10/10/mark一个找出bug与解决的过程/mark3.png" alt="mark3"></p>
+<p>并没有加载，所以jQuery获取不到导致后边一系列的报错。这个上传弹窗是在san原始dialog组件上造的一个dialog，于是去追dialog源码</p>
+<p><img src="/2018/10/10/mark一个找出bug与解决的过程/mark4.png" alt="mark4"></p>
+<p>看到这，仿佛抓到了一根救命稻草，这不正是我想要的吗，确保父组件(在这是自己写的上传组件)加载完毕后fire出去一个open方法让我调用，然而我还是太天真了</p>
+<p><img src="/2018/10/10/mark一个找出bug与解决的过程/mark5.png" alt="mark5"></p>
 <p>在页面加载时所有dialog的attached也一起触发了，由于这时open是关着的，so…</p>
 <p>然后现在要做的是要open为true，再触发dialog的attached 而且要页面加载时upload的dom加载完成后再调用upload.js，正常情况下控制dialog开关是控制open的布尔值，而此种情况下需要设置open一直为true，就想到s-if，s-if可以做到销毁和重建内部的事件监听和子组件，为什么不用s-if来控制dialog的开关呢，然后终于resolved~</p>
 
