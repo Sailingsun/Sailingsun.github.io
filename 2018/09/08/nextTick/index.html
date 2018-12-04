@@ -11,7 +11,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="Dtyctrl,"> 
-    <meta name="description" content="Dtyctrl，Sudo,本人孙某浩,男,二十一岁,民族汉,家住罗锅胡同一百零四号.被捕前系渣码公司驻一路四路公共汽车特派员……                自认为学识渊博、经验丰富，代码风骚、效率恐怖，JavaScrip,"> 
+    <meta name="description" content="Dtyctrl，Sudo,HEADHEAD就是你的目前branch的最新的commit 
+git reset1git reset [ –soft | –mixed | –hard] &amp;lt;commit&amp;gt;
+git re,"> 
     <meta name="author" content="Dtyctrl"> 
     <link rel="alternative" href="atom.xml" title="Suho’Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.ico"> 
@@ -26,7 +28,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">nextTick</h3>
+    <h3 class="subtitle">nextTick概念与应用场景</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -43,7 +45,7 @@
     <div class="section">
         <div class="article">
     <div class='main'>
-        <h1 class="title">nextTick</h1>
+        <h1 class="title">nextTick概念与应用场景</h1>
         <div class="stuff">
             <span>九月 08, 2018</span>
             
@@ -52,14 +54,22 @@
 
         </div>
         <div class="content markdown">
-            <h4 id="Ref与nextTick配合使用"><a href="#Ref与nextTick配合使用" class="headerlink" title="Ref与nextTick配合使用"></a>Ref与nextTick配合使用</h4><hr>
+            <h4 id="nextTick概念"><a href="#nextTick概念" class="headerlink" title="nextTick概念"></a>nextTick概念</h4><hr>
 
-<p>ref 注册时间的重要说明：因为 ref 本身是作为渲染结果被创建的，在初始渲染的时候你不能访问它们 - 它们还不存在！$refs 也不是响应式的，因此你不应该试图用它在模板中做数据绑定。</p>
 <p><img src="/2018/09/08/nextTick/PG0.png" alt="PG0"></p>
 <p><img src="/2018/09/08/nextTick/PG1.png" alt="PG1"></p>
+<p>San 的视图更新是异步的。组件数据变更后，将在下一个时钟周期更新视图。如果你修改了某些数据，想要在 DOM 更新后做某些事情，则需要使用 <code>nextTick</code> 方法。</p>
+<h4 id="nextTick应用场景"><a href="#nextTick应用场景" class="headerlink" title="nextTick应用场景"></a>nextTick应用场景</h4><hr>
+
+<p>一、刷新</p>
+<p>需要刷新时，如果直接使用san的this.$reload()会导致页面连续闪烁，耗费时间，造成用户体验不好；</p>
+<p>比如列表数据更改，想到的是重新请求list接口也会实现一种刷新的效果，但请求只会造成数据更新，而页面并没有更新出想要的效果，这时就需要用nextTick</p>
+<p>二、设置最终页面效果</p>
 <p><img src="/2018/09/08/nextTick/PG2.png" alt="PG2"></p>
 <p><img src="/2018/09/08/nextTick/PG3.png" alt="PG3"></p>
 <p>上述项目例子，在dom更新完成后设置按钮值为自定义项目配额，使得最后结果也是选择自定义项目配额</p>
+<p>联想：ref</p>
+<p>ref 注册时间的重要说明：因为 ref 本身是作为渲染结果被创建的，在初始渲染的时候你不能访问它们 - 它们还不存在！$refs 也不是响应式的，因此你不应该试图用它在模板中做数据绑定。</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
