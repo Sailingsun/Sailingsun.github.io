@@ -11,8 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="Dtyctrl,"> 
-    <meta name="description" content="Dtyctrl，Sudo,一、超常用的git stash场景1：你正在开发着某个功能，但QA返回了一个优先级max的紧急bug，想都不用想肯定要先去修这个，那你现在开发的怎么办呢，这时需要安排一下：
-git stash  /,"> 
+    <meta name="description" content="Dtyctrl，Sudo,本人孙某浩,男,二十一岁,民族汉,家住罗锅胡同一百零四号.被捕前系渣码公司驻一路四路公共汽车特派员……                自认为学识渊博、经验丰富，代码风骚、效率恐怖，JavaScrip,"> 
     <meta name="author" content="Dtyctrl"> 
     <link rel="alternative" href="atom.xml" title="Suho’Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.ico"> 
@@ -64,6 +63,14 @@ git stash  /,">
 <p><img src="/2018/10/10/mark一个找出bug与解决的过程/mark5.png" alt="mark5"></p>
 <p>在页面加载时所有dialog的attached也一起触发了，由于这时open是关着的，so…</p>
 <p>然后现在要做的是要open为true，再触发dialog的attached 而且要页面加载时upload的dom加载完成后再调用upload.js，正常情况下控制dialog开关是控制open的布尔值，而此种情况下需要设置open一直为true，就想到s-if，s-if可以做到销毁和重建内部的事件监听和子组件，为什么不用s-if来控制dialog的开关呢，然后终于resolved~</p>
+<p>第二集：</p>
+<p>ape2.8可以用aspage写了（之前san框架比较老不支持，2.7比较急san的升级放在了2.8），一个schema+一个组件，调用aspage一个页面就搞定了，需要pager、searchbox等只需要设置一下属性，可以说是减少了很多工作。</p>
+<p><img src="/2018/10/10/mark一个找出bug与解决的过程/14281.png" alt="14281"></p>
+<p>还是遇到了上传dialog加载的问题，问题是click点击选择文件按钮没有响应,hover上没有变化，console没有任何报错，过一段时间又会变得正常，而且这一段时间(时长时短)还无法确定，感觉比较怪异。首先定位问题</p>
+<p><img src="/2018/10/10/mark一个找出bug与解决的过程/14282.png" alt="14282"></p>
+<p>然后在代码调用upload初始化之前加一个断点，然后dom效果与结构：</p>
+<p><img src="/2018/10/10/mark一个找出bug与解决的过程/14283.png" alt="14283"></p>
+<p>然后猜测了一下，上上图的webuploader生成的1*1div应该是根据某个控件的位置和和大小来生成的，然后根据上图效果可以得知生成这个1✖️1div时那个控件还没有加载出来，导致webuploader生成错误。但如果根据上图的dom结构来看这时是有uploader的，说明这时已经将uploader的静态页面放到了dialog里边，再仔细看原来是uploader部分被display:none掉了，手动把display:none去掉的确马上正常了。然后很容易想到这是因为loading认为uploader还没有加载完(因为是在调用webuploader构造之前打的断点所以会没加载完，而webuploader构建按钮时又必须要uploader的静态资源加载完才可以有依照，才能正常构建按钮)，然后把uploader灭掉了。然后这时起初想的是要把loading去掉，那就不会有uploader被display：none了，然后去找aspage有没有loading:false这类配置，然后一层层向下找发现了LegacyActionAdapter这个文件有fire出一个actionloaded方法，然后这时想如果是在整个dialog加载完再调用webuploader来构建按钮也可以。然后向上去找，看到dialogXLoaderAction文件里有const {actionLoaded, beforeOk, ok, beforeClose, close} = config.events || {};然后后边传个events.actionLoaded就解决了~</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
