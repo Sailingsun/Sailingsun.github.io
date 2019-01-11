@@ -52,11 +52,10 @@
         <div class="content markdown">
             <p>开发过程中，用canvas的strokeRect根据返回的坐标画像素点，每一块区域都是由成百上千的点组成，画完之后结果跟预期有不小差距，然后去google了一下找到了问题所在：</p>
 <p>canvas绘图时每个canvas的每条线都有一条无限细的“中线”，线条的宽度是从中线向两侧延伸的。如果我们还是从第2个像素点画一条线，那么线条的中线就会靠齐到第2个像素的起点，然后我们开始画了，问题也就来了：Canvas 的线条以中线向两侧延伸，而不是向某一边延伸(比如这里，如果只是往右侧延伸，那么我们的问题就不再是问题了)，延伸过后我们的线条实际上是这样的：</p>
-<p><img src="/2019/01/11/canvas坑-二-画一像素点的问题/bVs38l.png" alt="bVs38l.png"><br>但是计算机不允许出现&lt;1px的图形。所以会做个折中，把两个像素都绘制了。如此一来，本来1px的线条，就成了看起来2px宽的线条。</p>
+<p><img src="/2019/01/11/canvas坑-二-画一像素点的问题/b3811.png" alt="b3822.png"><br>但是计算机不允许出现&lt;1px的图形。所以会做个折中，把两个像素都绘制了。如此一来，本来1px的线条，就成了看起来2px宽的线条。</p>
 <p>如何解决这个问题</p>
 <p>1、把线条中线和和像素中间点对齐就行了。</p>
-<p><img src="/2019/01/11/canvas坑-二-画一像素点的问题/bVs38D.png" alt="bVs38D.png"></p>
-<p><img src="/2019/01/11/canvas坑-二-画一像素点的问题/Users/sunjiahao/dtyctrl/source/_posts/Vue中几个需要注意的点和坑/bVs38D.png" alt="bVs38l"></p>
+<p><img src="/2019/01/11/canvas坑-二-画一像素点的问题/b3822.png" alt="b3822.png"></p>
 <p>中间点位置很好找，向后移动0.5px。所以你们画线时可以这样：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctx.strokeRect(x + 0.5, y + 0.5, 1, 1);</span><br></pre></td></tr></table></figure>
 <p>或者</p>
