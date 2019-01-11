@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Suho’Blog</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate" />
+    <meta name="keywords" content="Dtyctrl,"> 
+    <meta name="description" content="Dtyctrl，Sudo,本人孙某浩,男,二十一岁,民族汉,家住罗锅胡同一百零四号.被捕前系渣码公司驻一路四路公共汽车特派员……                自认为学识渊博、经验丰富，代码风骚、效率恐怖，JavaScrip,"> 
+    <meta name="author" content="Dtyctrl"> 
+    <link rel="alternative" href="atom.xml" title="Suho’Blog" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.ico"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+</head>
+
+<body class="loading">
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">canvas坑(二)画一像素点的问题</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">canvas坑(二)画一像素点的问题</h1>
+        <div class="stuff">
+            <span>一月 11, 2019</span>
+            
+
+        </div>
+        <div class="content markdown">
+            <p>开发过程中，用canvas的strokeRect根据返回的坐标画像素点，每一块区域都是由成百上千的点组成，画完之后结果跟预期有不小差距，然后去google了一下找到了问题所在：</p>
+<p>canvas绘图时每个canvas的每条线都有一条无限细的“中线”，线条的宽度是从中线向两侧延伸的。如果我们还是从第2个像素点画一条线，那么线条的中线就会靠齐到第2个像素的起点，然后我们开始画了，问题也就来了：Canvas 的线条以中线向两侧延伸，而不是向某一边延伸(比如这里，如果只是往右侧延伸，那么我们的问题就不再是问题了)，延伸过后我们的线条实际上是这样的：</p>
+<p><img src="/2019/01/11/canvas坑-二-画一像素点的问题/bVs38l.png" alt="bVs38l.png"><br>但是计算机不允许出现&lt;1px的图形。所以会做个折中，把两个像素都绘制了。如此一来，本来1px的线条，就成了看起来2px宽的线条。</p>
+<p>如何解决这个问题</p>
+<p>1、把线条中线和和像素中间点对齐就行了。</p>
+<p><img src="/2019/01/11/canvas坑-二-画一像素点的问题/bVs38D.png" alt="bVs38D.png"></p>
+<p><img src="/2019/01/11/canvas坑-二-画一像素点的问题/Users/sunjiahao/dtyctrl/source/_posts/Vue中几个需要注意的点和坑/bVs38D.png" alt="bVs38l"></p>
+<p>中间点位置很好找，向后移动0.5px。所以你们画线时可以这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctx.strokeRect(x + 0.5, y + 0.5, 1, 1);</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ctx.translate(0.5, 0.5);</span><br></pre></td></tr></table></figure>
+<p>2、还可以设置显示比例</p>
+<p>在浏览器的window变量中有一个devicePixelRatio的属性，该属性决定了浏览器会用几个（通常是2个）像素点来渲染1个像素，举例来说，假设某个屏幕的devicePixelRatio的值为2，一张100x100像素大小的图片，在此屏幕下，会用2个像素点的宽度去渲染图片的1个像素点，因此该图片在此屏幕上实际会占据200x200像素的空间，相当于图片被放大了一倍，因此图片会变得模糊。<br>其实方案很简单，也很容易明白。我们可以创建一个两倍于实际大小的canvas，然后用css样式把canvas限定在实际的大小。</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
+                <source type="audio/mpeg" src="">
+            </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://music.163.com/song/media/outer/url?id=557581476.mp3'></li>
+                    
+                </ul>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
