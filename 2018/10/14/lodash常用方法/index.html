@@ -26,7 +26,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">lodash常用方法</h3>
+    <h3 class="subtitle"></h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -43,12 +43,10 @@
     <div class="section">
         <div class="article">
     <div class='main'>
-        <h1 class="title">lodash常用方法</h1>
+        <h1 class="title"></h1>
         <div class="stuff">
             <span>十月 14, 2018</span>
             
-  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/lodash-compact/">lodash,compact</a></li></ul>
-
 
         </div>
         <div class="content markdown">
@@ -61,13 +59,21 @@
 <h1 id="pick"><a href="#pick" class="headerlink" title="pick"></a>pick</h1><p><a href="https://github.com/lodash/lodash/blob/master/pick.js" target="_blank" rel="noopener">pick源码</a></p>
 <h2 id="功能-2"><a href="#功能-2" class="headerlink" title="功能"></a>功能</h2><p><em>.pick方法与</em>.omit方法正好相反，它会从对象中选择指定的属性组装成新的对象。 和<em>.omit一样，</em>.pick也会返回新的对象，<font color="red">不改变原对象，返回新对象</font>并且能够传入字符串、数组、比较器函数。</p>
 <h2 id="使用-2"><a href="#使用-2" class="headerlink" title="使用"></a>使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// Naive method: Returning a new object with selected properties   </span><br><span class="line">Object.prototype.pick = function(arr) &#123;  </span><br><span class="line">    var _this = this;  </span><br><span class="line">    var obj = &#123;&#125;;  </span><br><span class="line">    arr.forEach(function(key)&#123;  </span><br><span class="line">        obj[key] = _this[key];  </span><br><span class="line">    &#125;);  </span><br><span class="line">  </span><br><span class="line">    return obj;  </span><br><span class="line">&#125;;  </span><br><span class="line">  </span><br><span class="line">var objA = &#123;&quot;name&quot;: &quot;colin&quot;, &quot;car&quot;: &quot;suzuki&quot;, &quot;age&quot;: 17&#125;;  </span><br><span class="line">  </span><br><span class="line">var objB = objA.pick([&apos;car&apos;, &apos;age&apos;]);  </span><br><span class="line">// &#123;&quot;car&quot;: &quot;suzuki&quot;, &quot;age&quot;: 17&#125;  </span><br><span class="line">  </span><br><span class="line">// Lodash  </span><br><span class="line">var objB = _.pick(objA, [&apos;car&apos;, &apos;age&apos;]);  </span><br><span class="line">// &#123;&quot;car&quot;: &quot;suzuki&quot;, &quot;age&quot;: 17&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="pluck（萃取）-pluck-list-propertyName"><a href="#pluck（萃取）-pluck-list-propertyName" class="headerlink" title="pluck（萃取）      _.pluck(list, propertyName)"></a>pluck（萃取）      _.pluck(list, propertyName)</h1><h2 id="功能-3"><a href="#功能-3" class="headerlink" title="功能"></a>功能</h2><p>萃取对象数组中的某个属性值，返回一个数组</p>
+<h1 id="pluck（萃取）「Removed」-pluck-list-propertyName"><a href="#pluck（萃取）「Removed」-pluck-list-propertyName" class="headerlink" title="pluck（萃取）「Removed」      _.pluck(list, propertyName)"></a>pluck（萃取）「Removed」      _.pluck(list, propertyName)</h1><h2 id="功能-3"><a href="#功能-3" class="headerlink" title="功能"></a>功能</h2><p>萃取对象数组中的某个属性值，返回一个数组</p>
 <h2 id="使用-3"><a href="#使用-3" class="headerlink" title="使用"></a>使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var stooges = [&#123;name: &apos;moe&apos;, age: 40&#125;, &#123;name: &apos;larry&apos;, age: 50&#125;, &#123;name: &apos;curly&apos;, age: 60&#125;];</span><br><span class="line">_.pluck(stooges, &apos;name&apos;);</span><br><span class="line">=&gt; [&quot;moe&quot;, &quot;larry&quot;, &quot;curly&quot;]</span><br></pre></td></tr></table></figure>
+<h2 id="Removed-pluck-in-favor-of-map-with-iteratee-shorthand"><a href="#Removed-pluck-in-favor-of-map-with-iteratee-shorthand" class="headerlink" title="Removed _.pluck in favor of _.map with iteratee shorthand"></a>Removed <code>_.pluck</code> in favor of <code>_.map</code> with iteratee shorthand</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var objects = [&#123; &apos;a&apos;: 1 &#125;, &#123; &apos;a&apos;: 2 &#125;];</span><br><span class="line"></span><br><span class="line">// in 3.10.1</span><br><span class="line">_.pluck(objects, &apos;a&apos;); // → [1, 2]</span><br><span class="line">_.map(objects, &apos;a&apos;); // → [1, 2]</span><br><span class="line"></span><br><span class="line">// in 4.0.0</span><br><span class="line">_.map(objects, &apos;a&apos;); // → [1, 2]</span><br></pre></td></tr></table></figure>
+<h2 id="ES6替代方式"><a href="#ES6替代方式" class="headerlink" title="ES6替代方式"></a>ES6替代方式</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clips.map(clip =&gt; clip.id)</span><br></pre></td></tr></table></figure>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
-                <source type="audio/mpeg" src="http://music.163.com/song/media/outer/url?id=536099160.mp3">
+                <source type="audio/mpeg" src="">
             </audio>
+            
+                <ul id="audio-list" style="display:none">
+                    
+                        <li title='0' data-url='http://music.163.com/song/media/outer/url?id=557581476.mp3'></li>
+                    
+                </ul>
             
         </div>
         
