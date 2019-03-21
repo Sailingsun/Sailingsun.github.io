@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="Dtyctrl,"> 
-    <meta name="description" content="Dtyctrl，Sudo,  本人孙佳浩,男,二十二岁,经常使用的昵称有水滴、Dtyctrl、Suho、清风作弦                  在大学中是目前为止唯一一名被老师邀请进实验室的学生，也做过志愿者的会长。然后,"> 
+    <meta name="description" content="Dtyctrl，Sudo,  本人孙佳浩,男,二十二岁,经常使用的昵称有水滴、Dtyctrl、Suho、清风作弦                  在大学中是目前为止唯一一名被老师邀请进实验室的学生，也做过志愿者的部长。然后,"> 
     <meta name="author" content="Dtyctrl"> 
     <link rel="alternative" href="atom.xml" title="Suho’Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.ico"> 
@@ -57,8 +57,8 @@
 <p><strong>解决方案：</strong></p>
 <p>1、alternatiff： A TIFF image viewer for Windows web browsers </p>
 <p>​    可以下载这个插件，但官网<font color="red">NOTICE: Firefox and Chrome have deprecated support for plugins like alternatiff so you may no longer be able to use it.</font>Firefox和Chrome已弃用对alternatiff等插件的支持，再者作为开发者，让用户去下插件也是很不友好的，所以请看方案2.</p>
-<p>2、github上的tiff.js  [传送门：<a href="https://github.com/seikichi/tiff.js/blob/master/README.md]" target="_blank" rel="noopener">https://github.com/seikichi/tiff.js/blob/master/README.md]</a></p>
-<p>两个demo传送门：[<a href="http://seikichi.github.io/tiff.js/basic.html，https://rasouliali.github.io/TiffViewer/]" target="_blank" rel="noopener">http://seikichi.github.io/tiff.js/basic.html，https://rasouliali.github.io/TiffViewer/]</a>    </p>
+<p>2、既然在浏览器中tiff不能预览，那就将这种类型的图片转为其他在浏览器可展示预览的类型(需要引入github上写的一个tiff.js)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">let reader = new FileReader();</span><br><span class="line">reader.onload = function () &#123;</span><br><span class="line">if (file.type === &apos;image/tiff&apos;) &#123;</span><br><span class="line">	let xhr = new XMLHttpRequest();</span><br><span class="line">	xhr.open(&apos;GET&apos;, this.result);</span><br><span class="line">	xhr.responseType = &apos;arraybuffer&apos;;</span><br><span class="line">	xhr.onload = function (e) &#123;</span><br><span class="line">	let buffer = xhr.response;</span><br><span class="line">	let tiff = new Tiff(&#123;buffer&#125;);</span><br><span class="line">	let canvas = tiff.toCanvas();</span><br><span class="line">&#125;;</span><br><span class="line">	xhr.send();</span><br><span class="line">&#125;</span><br><span class="line">&#125;;</span><br><span class="line">reader.readAsDataURL(file);</span><br></pre></td></tr></table></figure>
 <h4 id="探究其他格式图片（前端会经常接触到的）"><a href="#探究其他格式图片（前端会经常接触到的）" class="headerlink" title="探究其他格式图片（前端会经常接触到的）"></a>探究其他格式图片（前端会经常接触到的）</h4><hr>
 
 <p>GIF全称Graphic Interchange Format ,图像交换格式，最多可使用256种颜色，适合导航条，按钮，图标等具有统一色调的图像，可以制作动态图像。当网速慢的时候可以将图像从模糊到清晰慢慢显示。 </p>

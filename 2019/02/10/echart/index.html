@@ -26,7 +26,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">location.hash 的价值</h3>
+    <h3 class="subtitle">Echart使用注意事项</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -43,68 +43,23 @@
     <div class="section">
         <div class="article">
     <div class='main'>
-        <h1 class="title">location.hash 的价值</h1>
+        <h1 class="title">Echart使用注意事项</h1>
         <div class="stuff">
-            <span>九月 29, 2018</span>
+            <span>二月 10, 2019</span>
             
-  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/location-hash/">location,hash</a></li></ul>
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/echart/">echart</a></li></ul>
 
 
         </div>
         <div class="content markdown">
-            <h3 id="window-location-hash-的价值"><a href="#window-location-hash-的价值" class="headerlink" title="window.location.hash 的价值"></a>window.location.hash 的价值</h3><hr>
-
-<p>location是javascript里边管理地址栏的内置对象，比如location.href就管理页面的url，用location.href=url就可以直接将页面重定向url。而location.hash则可以用来获取或设置页面的标签值。比如<a href="http://domain/#admin" target="_blank" rel="noopener">http://domain/#admin</a>的location.hash=”#admin”。利用这个属性值可以做一个非常有意义的事情。</p>
-<p><strong>一、#的涵义</strong></p>
-<p>#代表网页中的一个位置。其右面的字符，就是该位置的标识符。比如，</p>
-<p>　　<a href="http://www.example.com/index.html#print" target="_blank" rel="noopener">http://www.example.com/index.html#print</a></p>
-<p>就代表网页index.html的print位置。浏览器读取这个URL后，会自动将print位置滚动至可视区域。</p>
-<p>为网页位置指定标识符，有两个方法。一是使用锚点，比如<a name="print"></a>，二是使用id属性，比如<div id="print">。</div></p>
-<p><strong>二、HTTP请求不包括#</strong></p>
-<p>#是用来指导浏览器动作的，对服务器端完全无用。所以，HTTP请求中不包括#。</p>
-<p>比如，访问下面的网址，</p>
-<p>　　<a href="http://www.example.com/index.html#print" target="_blank" rel="noopener">http://www.example.com/index.html#print</a></p>
-<p>浏览器实际发出的请求是这样的：</p>
-<p>　　GET /index.html HTTP/1.1</p>
-<p>　　Host: <a href="http://www.example.com/" target="_blank" rel="noopener">www.example.com</a></p>
-<p>可以看到，只是请求index.html，根本没有”#print”的部分。</p>
-<p><strong>三、#后的字符</strong></p>
-<p>在第一个#后面出现的任何字符，都会被浏览器解读为位置标识符。这意味着，这些字符都不会被发送到服务器端。</p>
-<p>比如，下面URL的原意是指定一个颜色值：</p>
-<p>　　<a href="http://www.example.com/?color=#fff" target="_blank" rel="noopener">http://www.example.com/?color=#fff</a></p>
-<p>但是，浏览器实际发出的请求是：</p>
-<p>　　GET /?color= HTTP/1.1</p>
-<p>　　Host: <a href="http://www.example.com/" target="_blank" rel="noopener">www.example.com</a></p>
-<p>可以看到，”#fff”被省略了。只有将#转码为%23，浏览器才会将其作为实义字符处理。也就是说，上面的网址应该被写成：</p>
-<p>　　<a href="http://example.com/?color=%23fff" target="_blank" rel="noopener">http://example.com/?color=%23fff</a></p>
-<p><strong>四、改变#不触发网页重载</strong></p>
-<p>单单改变#后的部分，浏览器只会滚动到相应位置，不会重新加载网页。</p>
-<p>比如，从</p>
-<p>　　<a href="http://www.example.com/index.html#location1" target="_blank" rel="noopener">http://www.example.com/index.html#location1</a></p>
-<p>改成</p>
-<p>　　<a href="http://www.example.com/index.html#location2" target="_blank" rel="noopener">http://www.example.com/index.html#location2</a></p>
-<p>浏览器不会重新向服务器请求index.html。</p>
-<p><strong>五、改变#会改变浏览器的访问历史</strong></p>
-<p>每一次改变#后的部分，都会在浏览器的访问历史中增加一个记录，使用”后退”按钮，就可以回到上一个位置。</p>
-<p>这对于ajax应用程序特别有用，可以用不同的#值，表示不同的访问状态，然后向用户给出可以访问某个状态的链接。</p>
-<p>值得注意的是，上述规则对IE 6和IE 7不成立，它们不会因为#的改变而增加历史记录。</p>
-<p><strong>六、window.location.hash读取#值</strong></p>
-<p>window.location.hash这个属性可读可写。读取时，可以用来判断网页状态是否改变；写入时，则会在不重载网页的前提下，创造一条访问历史记录。</p>
-<p><strong>七、onhashchange事件</strong></p>
-<p>这是一个HTML 5新增的事件，当#值发生变化时，就会触发这个事件。IE8+、Firefox 3.6+、Chrome 5+、Safari 4.0+支持该事件。</p>
-<p>它的使用方法有三种：</p>
-<p>　　window.onhashchange = func;</p>
-<p>　　<body onhashchange="func();"></body></p>
-<p>　　window.addEventListener(“hashchange”, func, false);</p>
-<p>对于不支持onhashchange的浏览器，可以用setInterval监控location.hash的变化。</p>
-<p><strong>八、Google抓取#的机制</strong></p>
-<p>默认情况下，Google的网络蜘蛛忽视URL的#部分。</p>
-<p>但是，Google还规定，如果你希望Ajax生成的内容被浏览引擎读取，那么URL中可以使用”#!”，Google会自动将其后面的内容转成查询字符串_escaped_fragment_的值。</p>
-<p>比如，Google发现新版twitter的URL如下：</p>
-<p>　　<a href="http://twitter.com/#!/username" target="_blank" rel="noopener">http://twitter.com/#!/username</a></p>
-<p>就会自动抓取另一个URL：</p>
-<p>　　<a href="http://twitter.com/?_escaped_fragment_=/username" target="_blank" rel="noopener">http://twitter.com/?_escaped_fragment_=/username</a></p>
-<p>通过这种机制，Google就可以索引动态的Ajax内容。</p>
+            <h4 id="Echart使用注意事项："><a href="#Echart使用注意事项：" class="headerlink" title="Echart使用注意事项："></a>Echart使用注意事项：</h4><p>1、 echarts 画图报错 this.dom.getContext is not a function;</p>
+<p>原因:因为在初始化echarts的时候，echarts.js规定只能使用dom原生方法获取标签，即document.getElementById(‘main’)；</p>
+<p>报错代码：</p>
+<p>var myEchart = echarts.init($(‘#main’));</p>
+<p> 正确代码：</p>
+<p> var myEchart = echarts.init(document.getElementById(‘main’));</p>
+<p>2、表格的初始化在mounted的时，通过调用this.drawLine();来实现的，但是charts这时候不在页面节点中，因为boxShow为false,所以初始化不成功。echats初始化的时候，节点一定要是在页面中真实存在的。（注意场景：dialog中画echart）</p>
+<p>3、echart会自动拿父级的高度，必须要给父级dom指定高度</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
