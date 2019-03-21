@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate" />
     <meta name="keywords" content="Dtyctrl,"> 
-    <meta name="description" content="Dtyctrl，Sudo,本人孙某浩,男,二十一岁,民族汉,家住罗锅胡同一百零四号.被捕前系渣码公司驻一路四路公共汽车特派员……                自认为学识渊博、经验丰富，代码风骚、效率恐怖，JavaScrip,"> 
+    <meta name="description" content="Dtyctrl，Sudo,本人孙某浩,男,二十二岁,经常使用的昵称有水滴、Dtyctrl、Suho、清风作弦                在大学中是目前为止唯一一名被老师邀请进实验室的学生，也做过志愿者的会长。然后平时喜欢,"> 
     <meta name="author" content="Dtyctrl"> 
     <link rel="alternative" href="atom.xml" title="Suho’Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.ico"> 
@@ -73,7 +73,7 @@
 <p>然后猜测了一下，上上图的webuploader生成的1*1div应该是根据某个控件的位置和和大小来生成的，然后根据上图效果可以得知生成这个1✖️1div时那个控件还没有加载出来，导致webuploader生成错误。但如果根据上图的dom结构来看这时是有uploader的，说明这时已经将uploader的静态页面放到了dialog里边，再仔细看原来是uploader部分被display:none掉了，手动把display:none去掉的确马上正常了。然后很容易想到这是因为loading认为uploader还没有加载完(因为是在调用webuploader构造之前打的断点所以会没加载完，而webuploader构建按钮时又必须要uploader的静态资源加载完才可以有依照，才能正常构建按钮)，然后把uploader灭掉了。然后这时起初想的是要把loading去掉，那就不会有uploader被display：none了，然后去找aspage有没有loading:false这类配置，然后一层层向下找发现了LegacyActionAdapter这个文件有fire出一个actionloaded方法，然后这时想如果是在整个dialog加载完再调用webuploader来构建按钮也可以。然后向上去找，看到dialogXLoaderAction文件里有const {actionLoaded, beforeOk, ok, beforeClose, close} = config.events || {};然后后边传个events.actionLoaded就解决了~</p>
 
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
-            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="true">
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="http://music.163.com/song/media/outer/url?id=557581476.mp3">
             </audio>
             
