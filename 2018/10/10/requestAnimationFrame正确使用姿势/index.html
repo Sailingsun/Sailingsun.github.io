@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html lang="" class="loading">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Suho’Blog</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="google" content="notranslate">
+    <meta name="keywords" content="Dtyctrl,"> 
+    <meta name="description" content="Dtyctrl，Sudo,"> 
+    <meta name="author" content="Dtyctrl"> 
+    <link rel="alternative" href="atom.xml" title="Suho’Blog" type="application/atom+xml"> 
+    <link rel="icon" href="/img/favicon.ico"> 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <link rel="stylesheet" href="/css/diaspora.css">
+</head>
+</html>
+<body class="loading">
+    <div id="loader"></div>
+    <div id="single">
+    <div id="top" style="display: block;">
+    <div class="bar" style="width: 0;"></div>
+    <a class="icon-home image-icon" href="javascript:;"></a>
+    <div title="播放/暂停" class="icon-play"></div>
+    <h3 class="subtitle">requestAnimationFrame正确使用姿势与使用体会</h3>
+    <div class="social">
+        <!--<div class="like-icon">-->
+            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
+        <!--</div>-->
+        <div>
+            <div class="share">
+                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+            </div>
+            <div id="qr"></div>
+        </div>
+    </div>
+    <div class="scrollbar"></div>
+</div>
+    <div class="section">
+        <div class="article">
+    <div class='main'>
+        <h1 class="title">requestAnimationFrame正确使用姿势与使用体会</h1>
+        <div class="stuff">
+            <span>十月 10, 2018</span>
+            
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/requestAnimationFrame-setInterval/">requestAnimationFrame,setInterval</a></li></ul>
+
+
+        </div>
+        <div class="content markdown">
+            <p><code>requestAnimationFrame</code> 不管理回调函数队列，而<font color="red"><strong>滚动、触摸</strong></font>这类高触发频率事件的回调可能会在同一帧内触发多次。所以正确使用 <code>requestAnimationFrame</code> 的姿势是，在同一帧内可能调用多次 <code>requestAnimationFrame</code> 时，要管理回调函数，防止重复绘制动画。</p>
+<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>对于这种高频发事件，一般的解决方法是使用节流函数。但是在这里使用节流函数并不能完美解决问题。因为节流函数是通过时间管理队列的，而 <code>requestAnimationFrame</code> 的触发时间是不固定的，在高刷新频率的显示屏上时间会小于 16.67ms，页面如果被推入后台，时间可能大于 16.67ms。</p>
+<p>完美的解决方案是通过 <code>requestAnimationFrame</code> 来管理队列，其思路就是保证 <code>requestAnimationFrame</code> 的队列里，同样的回调函数只有一个。(ps: 与控制动画在高频发生事件中触发一次idea相似)示意代码如下：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> onScroll = <span class="function"><span class="params">e</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (scheduledAnimationFrame) &#123; <span class="keyword">return</span> &#125;</span><br><span class="line"></span><br><span class="line">    scheduledAnimationFrame = <span class="literal">true</span></span><br><span class="line">    <span class="built_in">window</span>.requestAnimationFrame(<span class="function"><span class="params">timestamp</span> =&gt;</span> &#123;</span><br><span class="line">        scheduledAnimationFrame = <span class="literal">false</span></span><br><span class="line">        animation(timestamp)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'scroll'</span>, onScroll)</span><br></pre></td></tr></table></figure>
+<h2 id="使用体会"><a href="#使用体会" class="headerlink" title="使用体会"></a>使用体会</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一、	    </span></span><br><span class="line">		<span class="keyword">let</span> temp = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">let</span> currentTime = <span class="built_in">Date</span>.now();</span><br><span class="line">        setInterval(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">            requestAnimationFrame(<span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">                <span class="keyword">if</span> (<span class="built_in">Date</span>.now() - currentTime &gt;= <span class="number">197</span>) &#123;</span><br><span class="line">                    temp -= <span class="number">40</span>;</span><br><span class="line">                    <span class="built_in">document</span>.getElementById(<span class="string">'picCan'</span>).style.transform = <span class="string">'rotateY('</span> + temp + <span class="string">'deg)'</span>;</span><br><span class="line">                    requestAnimationFrame(fn);</span><br><span class="line">                    currentTime = <span class="built_in">Date</span>.now();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;, <span class="number">0</span>);</span><br><span class="line"><span class="comment">//二、const enter = ['\r', '\n', '\r\n'];</span></span><br><span class="line">        <span class="comment">// setInterval(() =&gt; &#123;</span></span><br><span class="line">        <span class="comment">//     temp -= 40;</span></span><br><span class="line">        <span class="comment">//     document.getElementById('picCan').style.transform = 'rotateY(' + temp + 'deg)';</span></span><br><span class="line">        <span class="comment">// &#125;, 197);</span></span><br></pre></td></tr></table></figure>
+<p>写法一比较于写法二：</p>
+<p>​    1、写法一动画效果更为流畅，写法二效果较卡,速度越快越明显(ps:深深体会到了用setInterval作循环动画的坑)。</p>
+<p>​    2、写法一通过设置时间间隔间接控制了requestAnimationFrame的速度</p>
+
+            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
+            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
+                <source type="audio/mpeg" src="http://music.163.com/song/media/outer/url?id=529668356.mp3">
+            </audio>
+            
+        </div>
+        
+    <div id='gitalk-container' class="comment link"
+        data-ae='false'
+        data-ci=''
+        data-cs=''
+        data-r=''
+        data-o=''
+        data-a=''
+        data-d='false'
+    >查看评论</div>
+
+
+    </div>
+    
+</div>
+
+
+    </div>
+</div>
+</body>
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
+<script src="/js/plugin.js"></script>
+<script src="/js/diaspora.js"></script>
+<link rel="stylesheet" href="/photoswipe/photoswipe.css">
+<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
+<script src="/photoswipe/photoswipe.min.js"></script>
+<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
+
+<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <!--  Controls are self-explanatory. Order can be changed. -->
+                <div class="pswp__counter"></div>
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+</html>
