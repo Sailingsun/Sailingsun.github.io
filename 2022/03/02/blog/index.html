@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="google" content="notranslate">
     <meta name="keywords" content="Dtyctrl,"> 
-    <meta name="description" content="Dtyctrl，Sudo,"> 
+    <meta name="description" content="Dtyctrl，Sudo,部署步骤登入堡垒机&amp;amp;开发机ssh user@url下载 nginx 源码，版本可以自己根据需要更改wget http://nginx.org/download/nginx-1.9.9.tar,"> 
     <meta name="author" content="Dtyctrl"> 
     <link rel="alternative" href="atom.xml" title="Suho’Blog" type="application/atom+xml"> 
     <link rel="icon" href="/img/favicon.ico"> 
@@ -26,7 +26,7 @@
     <div class="bar" style="width: 0;"></div>
     <a class="icon-home image-icon" href="javascript:;"></a>
     <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">blog</h3>
+    <h3 class="subtitle">nginx</h3>
     <div class="social">
         <!--<div class="like-icon">-->
             <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
@@ -43,14 +43,117 @@
     <div class="section">
         <div class="article">
     <div class='main'>
-        <h1 class="title">blog</h1>
+        <h1 class="title">nginx</h1>
         <div class="stuff">
             <span>三月 02, 2022</span>
             
+  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/nginx/">nginx</a></li></ul>
+
 
         </div>
         <div class="content markdown">
-            
+            <p>部署步骤<br>登入堡垒机&amp;开发机<br>ssh user@url<br>下载 nginx 源码，版本可以自己根据需要更改<br>wget <a href="http://nginx.org/download/nginx-1.9.9.tar.gz" target="_blank" rel="noopener">http://nginx.org/download/nginx-1.9.9.tar.gz</a></p>
+<p>tar zxvf nginx-1.9.9.tar.gz</p>
+<p>编译安装<br>源码安装一般分为3个步骤：配置(configure)、编译(make)、安装(make install)</p>
+<p>1) ./configure –prefix=/home/tm/ocrmind/nginx   // 使用 –prefix 配置安装路径</p>
+<p>2) make</p>
+<p>3) make install</p>
+<p>安装完成后一般会有 conf、html、logs、sbin 这几个目录</p>
+<p>其中需要关注的是conf及html：<br>html一般放我们打包后的资源；<br>conf中是一些配置，一般需要。<br>运行<br>./sbin/nginx -c nginx.conf文件所在目录<br>停止<br>./sbin/nginx -s stop<br>（运行与停止可以写到shell文件，达到一键启动/停止/重启功能；</p>
+<p>这里没有写出reload，有些修改reload会无效，建议使用运行和停止）</p>
+<p>nginx配置</p>
+<p>如下为nginx配置块：<br>…              #全局块</p>
+<p>events {         #events块<br>…<br>}</p>
+<p>http      #http块<br>{<br>…   #http全局块<br>server        #server块<br>{<br>…       #server全局块<br>location [PATTERN]   #location块<br>{<br>…<br>}<br>location [PATTERN]<br>{<br>…<br>}<br>}<br>server<br>{<br>…<br>}<br>…     #http全局块<br>}<br>全局块：配置影响nginx全局的指令。一般有运行nginx服务器的用户组，nginx进程pid存放路径，日志存放路径，配置文件引入，允许生成worker process数等。</p>
+<p>events块：配置影响nginx服务器或与用户的网络连接。有每个进程的最大连接数，选取哪种事件驱动模型处理连接请求，是否允许同时接受多个网路连接，开启多个网络连接序列化等。</p>
+<p>http块：可以嵌套多个server，配置代理，缓存，日志定义等绝大多数功能和第三方模块的配置。如文件引入，mime-type定义，日志自定义，是否使用sendfile传输文件，连接超时时间，单连接请求数等。</p>
+<p>server块：配置虚拟主机的相关参数，一个http中可以有多个server。</p>
+<p>location块：配置请求的路由，以及各种页面的处理情况。</p>
+<p>常用配置<br>接口超时详细配置：接口超时设置总结</p>
+<h1 id="http块中的upstream配置，Nginx的负载均衡主要通过配置upstream来实现，Nginx能够配置代理多台服务器，当一台服务器宕机之后，仍能保持系统可用"><a href="#http块中的upstream配置，Nginx的负载均衡主要通过配置upstream来实现，Nginx能够配置代理多台服务器，当一台服务器宕机之后，仍能保持系统可用" class="headerlink" title="http块中的upstream配置，Nginx的负载均衡主要通过配置upstream来实现，Nginx能够配置代理多台服务器，当一台服务器宕机之后，仍能保持系统可用"></a>http块中的upstream配置，Nginx的负载均衡主要通过配置upstream来实现，Nginx能够配置代理多台服务器，当一台服务器宕机之后，仍能保持系统可用</h1><pre><code>upstream demo {   
+  server 1.1.1.1;
+  server 2.2.2.2;
+}
+</code></pre><h1 id="server全局块配置"><a href="#server全局块配置" class="headerlink" title="server全局块配置"></a>server全局块配置</h1><pre><code> listen       8081;              # 监听端口（前端端口）
+
+ server_name  localhost;            # 监听地址
+client_max_body_size 500M;        # 上传文件的过程中，通常需要设置nginx报文大小限制。避免出现413 Request Entity Too Large
+
+client_body_buffer_size 100M;    # Nginx分配给请求数据的Buffer大小，如果请求的数据小于client_body_buffer_size直接将数据先在内存中存储；
+                                # 如果请求的值大于client_body_buffer_size小于client_max_body_size，就会将数据先存储到临时文件中。
+# 下面两个配置一般用于接口都需要长时间时配置，如果单个接口请求时间过长，不建议使用
+proxy_read_timeout 600s;        # 该指令设置与代理服务器的读超时时间。它决定了nginx会等待多长时间来获得请求的响应。这个时间不是获得整个response的时间，而是两次reading操作的时间。
+
+proxy_send_timeout 600s;        # 这个指定设置了发送请求给upstream服务器的超时时间。超时设置不是为了整个发送期间，而是在两次write操作期间。如果超时后，upstream没有收到新的数据，nginx会关闭连接
+</code></pre><h1 id="location块"><a href="#location块" class="headerlink" title="location块"></a>location块</h1><pre><code># 前端入口配置
+location / {
+
+    root   html;
+
+    index  index.html index.htm;
+
+}
+# api配置
+# 相同api前缀
+location /api/ {
+
+    proxy_pass    http://ocrmind/api/;
+
+ #   proxy_connect_timeout 5s;
+
+}
+# 不同api前缀
+location /v1/workbench/ {
+
+    proxy_pass    http://testmind/v1/workbench/;
+
+ #   proxy_connect_timeout 5s;
+
+}
+
+location /v1/graph/ {
+
+    proxy_pass    http://testmind/v1/graph/;
+
+ #   proxy_connect_timeout 5s;
+
+}
+# 错误页配置
+error_page   500 502 503 504  /50x.html;
+
+location = /50x.html {
+
+    root   html;
+
+}
+</code></pre><p>location配置详解<br>部分项目需要配置多个location块，例如语音项目中图片、音频、接口、特殊接口、websocket、根目录配置等都需要去单独用location块配置，当多个location块并存时，如果不理清每个location的匹配顺序及作用就会很混乱。</p>
+<p>语法规则： location [=|~|~*|^~] /uri/ { … }<br>=    开头表示精确匹配</p>
+<p>^~  如果把这个前缀用于一个常规字符串,那么告诉nginx 如果路径匹配那么不测试正则表达式。</p>
+<p>~    开头表示区分大小写的正则匹配 。</p>
+<p>~*   开头表示不区分大小写的正则匹配。</p>
+<p>!~   和!~* 分别为区分大小写不匹配及不区分大小写不匹配 的正则。</p>
+<p>/     通用匹配，任何请求都会匹配到。</p>
+<p>匹配顺序<br>首先匹配 = ；</p>
+<p>其次匹配^~ ；</p>
+<p>然后按文件中的顺序匹配正则；</p>
+<p>最后交给 / 通用匹配；</p>
+<p>注意</p>
+<p>如果有多个通用匹配的块，nginx则会先去匹配最长前缀的块，例如依次声明 location / {} location /api {} ，/api/demo会优先匹配第二个location块。<br>正则的查找在配置文件中是按顺序进行的，因此正则的顺序很重要，建议越精确的放的越靠前。<br>使用 = 精确匹配可以加块查找的顺序，如果根域名经常被访问建议直接使用 location = / {}。<br>常见问题<br>1、单页面刷新问题<br>产生原因<br>vue、react都会有这个问题。单页面简单来说就是访问所有资源路径、其实页面内容只有一个（一般是index.html）。这个页面中引入的js框架会根据当前访问的url去路由到相应的子页面组件（可以理解为页面片段）进行逻辑处理和页面渲染。</p>
+<p>所以当你访问<a href="http://1.1.1.1:8081/experiment" target="_blank" rel="noopener">http://1.1.1.1:8081/experiment</a> 其实web站中并没experiment这个页面资源。所以就会报404。</p>
+<p>解决方式<br>原理：访问子页面组件时重定向到index.html</p>
+<p>rewrite .* /index.html break;</p>
+<p>rewrite命令报 Uncaught SyntaxError: Unexpected token时，使用try_file</p>
+<p>try_files $uri $uri/ /index.html;</p>
+<p>2、用户权限问题<br>默认的用户是nobody，没有访问目录权限，然后指定有权限的用户即可</p>
+<p>user  nobody; 修改为  user  root;</p>
+<p>可以解决大部分重启等权限问题</p>
+<p>3、nginx 405 not allowed问题<br>location中增加error_page 405 =200  $request_uri;</p>
+<p>4、nginx返回数据不完整问题<br>当nginx 遇到大数据流时，会把数据先放在自己的缓冲区,然后一并发给客户端.</p>
+<p>那如果这个结论成立, 那一次请求的数据量很大, 则会有一部分数据会被刷掉.</p>
+<p>server块中添加配置：</p>
+<p>proxy_buffers 16 1024k;</p>
+<p>proxy_buffer_size 1024k;</p>
+
             <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
             <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
                 <source type="audio/mpeg" src="">
